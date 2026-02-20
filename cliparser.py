@@ -239,6 +239,12 @@ class CliParser(argparse.ArgumentParser):
                           "Requires rtt support on IUT.",
                           action='store_true', default=False)
 
+        self.add_argument("--defmt-log", type=str, default=None,
+                          help="Capture IUT defmt logs from device over RTT, "
+                          "decoded via defmt-print. Requires defmt-rtt support "
+                          "on IUT. Specify the path to the ELF file for "
+                          "symbol resolution.")
+
         self.add_argument("--rtt-log-syncto",
                           help="Specify the number of seconds that the RTT logging"
                           "should continue after the test has finished executing.",

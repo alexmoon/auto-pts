@@ -106,7 +106,7 @@ def hdl_wid_108(params: WIDParams):
     """
 
     # SM/CEN/JW/BV-01-C AuthReq Bonding Flags set to '00' and the MITM flag set to '0'
-    if params.test_case_name in ['SM/CEN/JW/BV-01-C']:
+    if params.test_case_name in ['SM/CEN/JW/BV-01-C', 'SM/CEN/JW/BI-06-C']:
         btp.gap_set_bondable_off()
         btp.gap_set_mitm_off()
 

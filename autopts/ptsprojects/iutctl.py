@@ -31,7 +31,7 @@ from autopts.ptsprojects.stack import get_stack
 from autopts.pybtp import btp, defs
 from autopts.pybtp.iutctl_common import BTP_ADDRESS, BTPSocketSrv, BTPWorker, LoggerWorker
 from autopts.pybtp.types import BTPInitError
-from autopts.rtt import BTMON, RTTLogger
+from autopts.rtt import BTMON, DefmtRTTLogger, RTTLogger
 from autopts.utils import get_global_end
 
 log = logging.debug
@@ -128,7 +128,11 @@ class IutCtl:
 
             if self.debugger_snr:
                 self.btp_address = BTP_ADDRESS + self.debugger_snr
-                self._rtt_logger = RTTLogger(args.rtt_log_syncto) if args.rtt_log else None
+                if args.defmt_log:
+                    self._rtt_logger = DefmtRTTLogger(args.defmt_log, args.rtt_log_syncto)
+                    self._rtt_logger_name = 'defmt'
+                elif args.rtt_log:
+                    self._rtt_logger = RTTLogger(args.rtt_log_syncto)
         self._btmon = BTMON() if args.btmon else None
 
         if self.iut_mode == "tty":
@@ -237,8 +241,13 @@ class IutCtl:
                 f"{self.tty_file},raw,b{self.tty_baudrate},{flow_control}"
             )
         else:
+            if sys.platform == "darwin":
+                baud = f"ispeed={self.tty_baudrate},ospeed={self.tty_baudrate}"
+            else:
+                baud = f"b{self.tty_baudrate}"
+
             socat_cmd = (
-                f"socat -x -v {self.tty_file},rawer,b{self.tty_baudrate},{flow_control} UNIX-CONNECT:{self.btp_address}"
+                f"socat -x -v {self.tty_file},rawer,{baud},{flow_control} UNIX-CONNECT:{self.btp_address}"
             )
 
         log(f"Starting socat process: {socat_cmd}")

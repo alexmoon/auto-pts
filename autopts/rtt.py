@@ -283,6 +283,55 @@ class RTTLogger:
             self.log_file = None
 
 
+class DefmtRTTLogger:
+    def __init__(self, elf_path, syncto=0):
+        self.rtt_reader = RTT()
+        self.elf_path = elf_path
+        self.defmt_process = None
+        self.log_file = None
+        self.syncto = syncto
+
+    def _on_line_read_callback(self, data, user_data):
+        proc, = user_data
+        try:
+            proc.stdin.write(data)
+            proc.stdin.flush()
+        except (BrokenPipeError, OSError):
+            pass
+
+    def is_running(self):
+        return not self.rtt_reader.stop_thread.is_set()
+
+    def start(self, buffer_name, log_filename, device_core, debugger_snr):
+        log("%s.%s", self.__class__, self.start.__name__)
+        self.log_file = open(log_filename, 'w')
+        self.defmt_process = subprocess.Popen(
+            ['defmt-print', '-e', self.elf_path],
+            stdin=subprocess.PIPE,
+            stdout=self.log_file,
+            stderr=subprocess.STDOUT)
+        self.rtt_reader.start(buffer_name, device_core, debugger_snr,
+                              self._on_line_read_callback, (self.defmt_process,))
+
+    def stop(self):
+        log("%s.%s", self.__class__, self.stop.__name__)
+        if self.syncto > 0:
+            time.sleep(self.syncto)
+        self.rtt_reader.stop()
+
+        if self.defmt_process:
+            try:
+                self.defmt_process.stdin.close()
+            except OSError:
+                pass
+            self.defmt_process.wait()
+            self.defmt_process = None
+
+        if self.log_file:
+            self.log_file.close()
+            self.log_file = None
+
+
 if __name__ == "__main__":
     btmon_buffer = 'btmonitor'
     rttlog_buffer = 'Logger'
