@@ -121,6 +121,9 @@ def test_cases(ptses):
     pre_conditions_keysize = common + [TestFunc(stack.l2cap_init, le_psm, le_initial_mtu),
                                        TestFunc(btp.l2cap_le_listen, le_psm, le_initial_mtu,
                                                 L2CAPConnectionResponse.insufficient_encryption_key_size)]
+    pre_conditions_encrypt = common + [TestFunc(stack.l2cap_init, le_psm, le_initial_mtu),
+                                       TestFunc(btp.l2cap_le_listen, le_psm, le_initial_mtu,
+                                                L2CAPConnectionResponse.insufficient_encryption)]
     pre_conditions_author = common + [TestFunc(stack.l2cap_init, le_psm, le_initial_mtu),
                                       TestFunc(btp.l2cap_le_listen, le_psm, le_initial_mtu,
                                                L2CAPConnectionResponse.insufficient_authorization)]
@@ -141,7 +144,7 @@ def test_cases(ptses):
                   pre_conditions_keysize,
                   generic_wid_hdl=l2cap_wid_hdl),
         TTestCase("L2CAP", "L2CAP/LE/CFC/BV-25-C",
-                  pre_conditions_authen,
+                  pre_conditions_encrypt,
                   generic_wid_hdl=l2cap_wid_hdl),
         # Enhanced Credit Based Flow Control Channel
         TTestCase("L2CAP", "L2CAP/COS/ECFC/BV-04-C",
