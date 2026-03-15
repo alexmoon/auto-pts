@@ -4610,7 +4610,7 @@
           <Row>
             <Name>TSPC_L2CAP_2_48</Name>
             <Description>Enhanced Credit Based Flow Control Mode (C.23)</Description>
-            <Value>TRUE</Value>
+            <Value>FALSE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -4622,13 +4622,13 @@
           <Row>
             <Name>TSPC_L2CAP_2_48b</Name>
             <Description>Enhanced Credit Based Flow Control Mode - LE (C.27)</Description>
-            <Value>TRUE</Value>
+            <Value>FALSE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
             <Name>TSPC_L2CAP_2_49</Name>
             <Description>Support pending result in L2CAP_CREDIT_BASED_CONNECTION_RSP (C.28)</Description>
-            <Value>TRUE</Value>
+            <Value>FALSE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
