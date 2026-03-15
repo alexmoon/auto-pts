@@ -811,6 +811,27 @@ def hdl_wid_277(params: WIDParams):
     return False
 
 
+def hdl_wid_280(params: WIDParams):
+    """
+    description: Please send the L2CAP LE Credit Based Connection Request {n} times.
+    """
+    match = re.findall(r'(\d+)\s+times', params.description)
+    if not match:
+        logging.error("%s: could not parse count from description", hdl_wid_280.__name__)
+        return False
+
+    count = int(match[0])
+    stack = get_stack()
+    l2cap = stack.l2cap
+
+    for _ in range(count):
+        chan_ids = btp.l2cap_conn(None, None, l2cap.psm, l2cap.initial_mtu)
+        for chan_id in chan_ids:
+            l2cap.wait_for_disconnection(chan_id, 30)
+
+    return True
+
+
 def hdl_wid_26(params: WIDParams):
     '''
     Using the Implementation Under Test(IUT), send an Echo Request to the PTS.

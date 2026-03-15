@@ -105,6 +105,7 @@ class L2cap:
         self.psm = psm
         self.initial_mtu = initial_mtu
         self.channels = []
+        self.disconnected_ids = set()
         self.hold_credits = 0
         self.num_channels = 2
 
@@ -148,16 +149,15 @@ class L2cap:
 
         chan.connected(psm, peer_mtu, peer_mps, our_mtu, our_mps,
                        bd_addr_type, bd_addr)
+        self.disconnected_ids.discard(chan_id)
 
     def disconnected(self, chan_id, psm, bd_addr_type, bd_addr, reason):
         chan = self.chan_lookup_id(chan_id)
-        if chan is None:
-            logging.error("unknown channel")
-            return
-        # Remove channel from saved channels
-        self.channels.remove(chan)
+        if chan is not None:
+            self.channels.remove(chan)
+            chan.disconnected(psm, bd_addr_type, bd_addr, reason)
 
-        chan.disconnected(psm, bd_addr_type, bd_addr, reason)
+        self.disconnected_ids.add(chan_id)
 
     def is_connected(self, chan_id):
         chan = self.chan_lookup_id(chan_id)
@@ -166,11 +166,14 @@ class L2cap:
 
         return chan.is_connected(10)
 
+    def is_disconnected(self, chan_id):
+        return chan_id in self.disconnected_ids
+
     def wait_for_disconnection(self, chan_id, timeout):
-        if not self.is_connected(chan_id):
+        if self.is_disconnected(chan_id):
             return True
 
-        return wait_for_event(timeout, lambda: not self.is_connected(chan_id))
+        return wait_for_event(timeout, self.is_disconnected, chan_id)
 
     def wait_for_connection(self, chan_id, timeout=5):
         if self.is_connected(chan_id):
