@@ -487,7 +487,7 @@
           <Row>
             <Name>TSPC_GAP_8a_6</Name>
             <Description>Security Manager OOB (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -697,7 +697,7 @@
           <Row>
             <Name>TSPC_GAP_11c_1</Name>
             <Description>Out of Band (C.1)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -769,7 +769,7 @@
           <Row>
             <Name>TSPC_GAP_14a_6</Name>
             <Description>Security Manager OOB (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -1099,7 +1099,7 @@
           <Row>
             <Name>TSPC_GAP_20a_6</Name>
             <Description>Security Manager OOB (C.3)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -1777,7 +1777,7 @@
           <Row>
             <Name>TSPC_GAP_27b_9</Name>
             <Description>Out of Band (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -1897,7 +1897,7 @@
           <Row>
             <Name>TSPC_GAP_30a_6</Name>
             <Description>Security Manager OOB (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -2551,7 +2551,7 @@
           <Row>
             <Name>TSPC_GAP_37b_9</Name>
             <Description>Out of Band (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -2737,7 +2737,7 @@
           <Row>
             <Name>TSPC_SM_2_4</Name>
             <Description>OOB supported (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -5097,7 +5097,7 @@
           <Row>
             <Name>TSPC_SM_4a_3</Name>
             <Description>Out of Band (C.1)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -5115,7 +5115,7 @@
           <Row>
             <Name>TSPC_SM_4b_3</Name>
             <Description>Out of Band (C.1)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
