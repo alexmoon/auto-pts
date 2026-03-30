@@ -27,6 +27,18 @@ def gap_wid_hdl(wid, description, test_case_name):
     return generic_wid_hdl(wid, description, test_case_name, [__name__, 'autopts.wid.gap'])
 
 
+def hdl_wid_78(params: WIDParams):
+    """
+    Please send an LE connect request to establish a connection.
+    """
+    btp.gap_conn()
+
+    if params.test_case_name in ['GAP/SEC/AUT/BV-25-C']:
+        btp.gattc_exchange_mtu(btp.pts_addr_type_get(), btp.pts_addr_get())
+
+    return True
+
+
 def hdl_wid_104(_: WIDParams):
     return True
 

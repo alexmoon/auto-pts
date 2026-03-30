@@ -173,12 +173,18 @@ def test_cases(ptses):
 
     stack = get_stack()
 
-    pre_conditions = [
+    # Split pre_conditions so privacy/security commands can be injected
+    # between ctrl_info read and PIXIT updates (PIXITs use lambdas that
+    # evaluate current_settings, so privacy must be enabled first).
+    pre_conditions_base = [
         TestFunc(btp.core_reg_svc_gap),
         TestFunc(stack.gap_init, iut_device_name,
                  iut_manufacturer_data, iut_appearance, iut_svc_data, iut_flags,
                  iut_svcs, iut_uri, periodic_data, iut_le_supp_feat),
         TestFunc(btp.gap_read_ctrl_info),
+    ]
+
+    pre_conditions_pixits = [
         TestFunc(lambda: pts.update_pixit_param(
             "GAP", "TSPX_bd_addr_iut",
             stack.gap.iut_addr_get_str())),
@@ -216,13 +222,74 @@ def test_cases(ptses):
         # We do this on test case, because previous one could update
         # this if RPA was used by PTS
         # TODO: Get PTS address type
-        TestFunc(btp.set_pts_addr, pts_bd_addr, Addr.le_public)]
+        TestFunc(btp.set_pts_addr, pts_bd_addr, Addr.le_public),
+    ]
 
-    le_sc_only = pre_conditions + [
+    pre_conditions = pre_conditions_base + pre_conditions_pixits
+
+    def _with_privacy(*extra_cmds):
+        """Build pre-conditions with privacy/security commands injected
+        before PIXIT updates so current_settings reflects the new state."""
+        return pre_conditions_base + list(extra_cmds) + pre_conditions_pixits
+
+    # Privacy with RPA timeout (matches Zephyr privacy.conf)
+    le_privacy = _with_privacy(
+        TestFunc(btp.gap_set_privacy_on),
+        TestFunc(btp.gap_set_rpa_timeout, 30),
+    ) + init_gatt_db
+
+    # Privacy + no MITM enforcement (matches Zephyr sc_m1l2.conf)
+    le_privacy_sc_m1l2 = _with_privacy(
+        TestFunc(btp.gap_set_privacy_on),
+    ) + init_gatt_db
+
+    # Privacy + MITM enforcement (matches Zephyr sc_m1l3.conf)
+    le_privacy_sc_m1l3 = _with_privacy(
+        TestFunc(btp.gap_set_privacy_on),
+        TestFunc(btp.gap_set_mitm_on),
+    ) + init_gatt_db
+
+    # Privacy + SC only + MITM (matches Zephyr sec_m1l4.conf)
+    le_sc_only = _with_privacy(
+        TestFunc(btp.gap_set_privacy_on),
+        TestFunc(btp.gap_set_mitm_on),
         TestFunc(btp.gap_set_sc_only_on),
-    ] + init_gatt_db
+    ) + init_gatt_db
 
     custom_test_cases = [
+        # Privacy test cases (matches Zephyr privacy.conf)
+        TTestCase("GAP", "GAP/PRIV/CONN/BV-10-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/PRIV/CONN/BV-11-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/CONN/ACEP/BV-03-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/CONN/ACEP/BV-04-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/CONN/DCEP/BV-05-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/CONN/DCEP/BV-06-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/CONN/DCON/BV-04-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/CONN/DCON/BV-05-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/CONN/GCEP/BV-05-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/CONN/GCEP/BV-06-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/CONN/PRDA/BV-02-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/CONN/NCON/BV-02-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/CONN/UCON/BV-06-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/BROB/BCST/BV-03-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/BROB/BCST/BV-04-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/BROB/BCST/BV-05-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/BROB/OBSV/BV-06-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/DISC/RPA/BV-01-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/GAT/BV-18-C", cmds=le_privacy, generic_wid_hdl=gap_wid_hdl),
+
+        # Privacy + SC mode 1 level 2 (matches Zephyr sc_m1l2.conf)
+        TTestCase("GAP", "GAP/SEC/SEM/BV-37-C", cmds=le_privacy_sc_m1l2, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/SEC/SEM/BV-39-C", cmds=le_privacy_sc_m1l2, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/SEC/SEM/BV-41-C", cmds=le_privacy_sc_m1l2, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/SEC/SEM/BV-43-C", cmds=le_privacy_sc_m1l2, generic_wid_hdl=gap_wid_hdl),
+
+        # Privacy + SC mode 1 level 3 (matches Zephyr sc_m1l3.conf)
+        TTestCase("GAP", "GAP/SEC/SEM/BV-38-C", cmds=le_privacy_sc_m1l3, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/SEC/SEM/BV-40-C", cmds=le_privacy_sc_m1l3, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/SEC/SEM/BV-42-C", cmds=le_privacy_sc_m1l3, generic_wid_hdl=gap_wid_hdl),
+        TTestCase("GAP", "GAP/SEC/SEM/BV-44-C", cmds=le_privacy_sc_m1l3, generic_wid_hdl=gap_wid_hdl),
+
         # LE Secure Connections Only (sec_m1l4 overlay)
         TTestCase("GAP", "GAP/SEC/SEM/BV-21-C",
                   cmds=le_sc_only,

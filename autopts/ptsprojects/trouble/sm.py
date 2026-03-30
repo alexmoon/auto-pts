@@ -76,7 +76,56 @@ def test_cases(ptses):
                       # FIXME Find better place to store PTS bdaddr
                       TestFunc(btp.set_pts_addr, pts_bd_addr, Addr.le_public)]
 
+    pre_conditions_privacy = [
+        TestFunc(btp.core_reg_svc_gap),
+        TestFunc(stack.gap_init, iut_device_name),
+        TestFunc(btp.gap_read_ctrl_info),
+        TestFunc(btp.gap_set_privacy_on),
+        TestFunc(lambda: pts.update_pixit_param(
+            "SM", "TSPX_bd_addr_iut",
+            stack.gap.iut_addr_get_str())),
+        TestFunc(lambda: pts.update_pixit_param(
+            "SM", "TSPX_iut_device_name_in_adv_packet_for_random_address",
+            iut_device_name)),
+        TestFunc(lambda: pts.update_pixit_param(
+            "SM", "TSPX_Bonding_Flags", "01"
+            if stack.gap.current_settings_get('Bondable')
+            else "00")),
+        TestFunc(btp.set_pts_addr, pts_bd_addr, Addr.le_public),
+    ]
+
     custom_test_cases = [
+        # Privacy test cases (matches Zephyr privacy.conf)
+        TTestCase("SM", "SM/CEN/KDU/BV-05-C",
+                  pre_conditions_privacy,
+                  generic_wid_hdl=sm_wid_hdl),
+        TTestCase("SM", "SM/CEN/KDU/BV-10-C",
+                  pre_conditions_privacy,
+                  generic_wid_hdl=sm_wid_hdl),
+        TTestCase("SM", "SM/CEN/KDU/BV-11-C",
+                  pre_conditions_privacy,
+                  generic_wid_hdl=sm_wid_hdl),
+        TTestCase("SM", "SM/PER/KDU/BV-02-C",
+                  pre_conditions_privacy,
+                  generic_wid_hdl=sm_wid_hdl),
+        TTestCase("SM", "SM/PER/KDU/BV-08-C",
+                  pre_conditions_privacy,
+                  generic_wid_hdl=sm_wid_hdl),
+
+        # Privacy + no MITM (matches Zephyr sc_m1l2.conf)
+        TTestCase("SM", "SM/CEN/KDU/BI-02-C",
+                  pre_conditions_privacy,
+                  generic_wid_hdl=sm_wid_hdl),
+        TTestCase("SM", "SM/CEN/KDU/BI-03-C",
+                  pre_conditions_privacy,
+                  generic_wid_hdl=sm_wid_hdl),
+        TTestCase("SM", "SM/PER/KDU/BI-02-C",
+                  pre_conditions_privacy,
+                  generic_wid_hdl=sm_wid_hdl),
+        TTestCase("SM", "SM/PER/KDU/BI-03-C",
+                  pre_conditions_privacy,
+                  generic_wid_hdl=sm_wid_hdl),
+
         TTestCase("SM", "SM/CEN/PKE/BI-01-C",
                   pre_conditions +
                   [TestFunc(btp.gap_set_io_cap, IOCap.keyboard_only)],

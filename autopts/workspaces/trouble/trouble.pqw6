@@ -619,13 +619,13 @@
           <Row>
             <Name>TSPC_GAP_11_1</Name>
             <Description>Privacy feature (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
             <Name>TSPC_GAP_11_2</Name>
             <Description>Resolvable private address generation procedure (C.1)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -637,13 +637,13 @@
           <Row>
             <Name>TSPC_GAP_11_4</Name>
             <Description>Resolvable private address resolution procedure (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
             <Name>TSPC_GAP_11_5</Name>
             <Description>Controller-based privacy (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -895,7 +895,7 @@
           <Row>
             <Name>TSPC_GAP_17_1</Name>
             <Description>Privacy feature (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -907,19 +907,19 @@
           <Row>
             <Name>TSPC_GAP_17_3</Name>
             <Description>Resolvable private address resolution procedure (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
             <Name>TSPC_GAP_17_4</Name>
             <Description>Resolvable private address generation procedure (C.2)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
             <Name>TSPC_GAP_17_5</Name>
             <Description>Controller-based privacy (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -1585,7 +1585,7 @@
           <Row>
             <Name>TSPC_GAP_26_1</Name>
             <Description>Privacy feature (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -1597,25 +1597,25 @@
           <Row>
             <Name>TSPC_GAP_26_3</Name>
             <Description>Resolvable private address generation procedure (C.1)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
             <Name>TSPC_GAP_26_4</Name>
             <Description>Resolvable private address resolution procedure (C.1)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
             <Name>TSPC_GAP_26_5</Name>
             <Description>Controller-based privacy (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
             <Name>TSPC_GAP_26_6</Name>
             <Description>LL Privacy (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -2383,7 +2383,7 @@
           <Row>
             <Name>TSPC_GAP_36_1</Name>
             <Description>Privacy feature (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -2395,7 +2395,7 @@
           <Row>
             <Name>TSPC_GAP_36_3</Name>
             <Description>Resolvable private address resolution procedure (C.1)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -2407,13 +2407,13 @@
           <Row>
             <Name>TSPC_GAP_36_5</Name>
             <Description>Resolvable private address generation procedure (C.1)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
             <Name>TSPC_GAP_36_6</Name>
             <Description>Controller-based privacy (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
@@ -2719,7 +2719,7 @@
           <Row>
             <Name>TSPC_LL_2_5</Name>
             <Description>Resolution of private addresses (O)</Description>
-            <Value>FALSE</Value>
+            <Value>TRUE</Value>
             <Mandatory>FALSE</Mandatory>
           </Row>
           <Row>
