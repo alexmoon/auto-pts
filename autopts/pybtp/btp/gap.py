@@ -128,6 +128,8 @@ GAP = {
                        defs.BTP_GAP_CMD_SET_PRIVACY, CONTROLLER_INDEX, 1),
     "set_privacy_off": (defs.BTP_SERVICE_ID_GAP,
                         defs.BTP_GAP_CMD_SET_PRIVACY, CONTROLLER_INDEX, 0),
+    "set_rpa_timeout": (defs.BTP_SERVICE_ID_GAP,
+                        defs.BTP_GAP_CMD_SET_RPA_TIMEOUT, CONTROLLER_INDEX),
     "set_sc_only_on": (defs.BTP_SERVICE_ID_GAP,
                        defs.BTP_GAP_CMD_SET_SC_ONLY, CONTROLLER_INDEX, 1),
     "set_sc_only_off": (defs.BTP_SERVICE_ID_GAP,
@@ -1317,6 +1319,18 @@ def gap_set_privacy_off():
 
     tuple_data = gap_command_rsp_succ()
     __gap_current_settings_update(tuple_data)
+
+
+def gap_set_rpa_timeout(timeout):
+    logging.debug("%s %d", gap_set_rpa_timeout.__name__, timeout)
+
+    iutctl = get_iut()
+
+    data_ba = struct.pack('<H', timeout)
+
+    iutctl.btp_socket.send(*GAP['set_rpa_timeout'], data=data_ba)
+
+    gap_command_rsp_succ()
 
 
 def gap_set_sc_only_on():
